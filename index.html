@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>VaultPro</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
+</head>
+<body>
+    <div id="app" v-cloak>
+        <div v-if="!currentUser" class="login-card">
+            <h2>VaultPro</h2>
+            <input type="email" v-model="loginEmail" placeholder="Email">
+            <input type="password" v-model="loginPass" placeholder="Password">
+            <button @click="login" class="add-btn">Login</button>
+        </div>
+
+        <div v-else>
+            <div class="balance-card">
+                <h3>Balance</h3>
+                <h1 :class="cashBalance >= 0 ? 'pos' : 'neg'">${{ cashBalance.toFixed(2) }}</h1>
+                <button class="add-btn" @click="showModal = true">+ Add Entry</button>
+            </div>
+
+            <div v-for="t in transactions" :key="t.id" class="t-item" @click="openEdit(t)">
+                <span>{{ t.category }}</span>
+                <span :class="isPositive(t.category) ? 'pos' : 'neg'">${{ t.amount }}</span>
+            </div>
+            <button class="del-btn" @click="logout">Logout</button>
+        </div>
+
+        <div v-if="showModal" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);padding:20px;box-sizing:border-box;z-index:99;">
+            <input type="number" v-model="entry.amount" placeholder="Amount">
+            <select v-model="entry.category">
+                <option v-for="cat in categories" :value="cat">{{ cat }}</option>
+            </select>
+            <button class="add-btn" @click="saveEntry">Save</button>
+            <button @click="showModal = false">Cancel</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
