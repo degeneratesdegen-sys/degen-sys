@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read, update: if request.auth.uid == userId;
+      allow create: if request.auth.uid == userId;
+    }
+
+    // This rule applies to all subcollections of a user document.
+    match /users/{userId}/{subcollection}/{docId} {
+      allow read, update, delete: if request.auth.uid == userId;
+      // When creating a document, ensure it is "owned" by the user.
+      allow create: if request.auth.uid == userId && request.resource.data.by == userId;
+    }
+  }
+}

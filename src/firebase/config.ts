@@ -1,0 +1,8 @@
+export const firebaseConfig = {
+  apiKey: "AIzaSyBMAVr7ylMjW6NUymycrLpnaeWqRR2sjJc",
+  authDomain: "vaultpro-90a00.firebaseapp.com",
+  projectId: "vaultpro-90a00",
+  storageBucket: "vaultpro-90a00.firebasestorage.app",
+  messagingSenderId: "802795035216",
+  appId: "1:802795035216:web:0bf0d3efa72e5bc8004f55"
+};
